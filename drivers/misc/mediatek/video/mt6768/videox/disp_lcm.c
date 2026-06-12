@@ -1409,26 +1409,7 @@ int disp_lcm_esd_recover(struct disp_lcm_handle *plcm)
 
 int disp_lcm_suspend(struct disp_lcm_handle *plcm)
 {
-	struct LCM_DRIVER *lcm_drv = NULL;
-
-	DISPFUNC();
-	if (_is_lcm_inited(plcm)) {
-		lcm_drv = plcm->drv;
-		if (lcm_drv->suspend) {
-			lcm_drv->suspend();
-		} else {
-			DISPERR("FATAL ERROR, lcm_drv->suspend is null\n");
-			return -1;
-		}
-
-		if (lcm_drv->suspend_power)
-			lcm_drv->suspend_power();
-
-
-		return 0;
-	}
-	DISPERR("lcm_drv is null\n");
-	return -1;
+	return 0;
 }
 
 int disp_lcm_resume(struct disp_lcm_handle *plcm)

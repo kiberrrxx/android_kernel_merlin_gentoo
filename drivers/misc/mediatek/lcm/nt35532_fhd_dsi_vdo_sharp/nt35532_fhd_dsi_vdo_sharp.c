@@ -401,7 +401,7 @@ struct LCM_DRIVER nt35532_fhd_dsi_vdo_sharp_lcm_drv = {
 	.init_power     = lcm_init_power,
 	.resume			= lcm_resume,
 	.resume_power	= lcm_resume_power,
-	.suspend		= lcm_suspend,
+	.suspend = NULL,
 	.suspend_power	= lcm_suspend_power,
 };
 

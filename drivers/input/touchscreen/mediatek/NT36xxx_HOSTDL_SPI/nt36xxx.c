@@ -1612,6 +1612,7 @@ return:
 *******************************************************/
 static int32_t nvt_ts_probe(struct spi_device *client)
 {
+	client->irq = gpio_to_irq(326);
 	int32_t ret = 0;
 #if ((TOUCH_KEY_NUM > 0) || WAKEUP_GESTURE)
 	int32_t retry = 0;
@@ -1679,14 +1680,14 @@ static int32_t nvt_ts_probe(struct spi_device *client)
 	ret = nvt_parse_dt(&client->dev);
 	if (ret) {
 		NVT_ERR("parse dt error\n");
-		goto err_spi_setup;
+		// goto err_spi_setup;
 	}
 
 	//---request and config GPIOs---
 	ret = nvt_gpio_config(ts);
 	if (ret) {
 		NVT_ERR("gpio config error!\n");
-		goto err_gpio_config_failed;
+		// goto err_gpio_config_failed;
 	}
 
 	mutex_init(&ts->lock);
@@ -1707,7 +1708,7 @@ static int32_t nvt_ts_probe(struct spi_device *client)
 	if (ret) {
 		NVT_ERR("chip is not identified\n");
 		ret = -EINVAL;
-		goto err_chipvertrim_failed;
+		// goto err_chipvertrim_failed;
 	}
 
 	ts->abs_x_max = TOUCH_DEFAULT_MAX_WIDTH;

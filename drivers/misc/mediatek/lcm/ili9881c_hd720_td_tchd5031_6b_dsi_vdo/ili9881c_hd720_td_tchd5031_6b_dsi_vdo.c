@@ -675,7 +675,7 @@ struct LCM_DRIVER ili9881c_hd720_td_tchd5031_6b_dsi_vdo_lcm_drv = {
 	.set_util_funcs = lcm_set_util_funcs,
 	.get_params = lcm_get_params,
 	.init = lcm_init_lcm,
-	.suspend = lcm_suspend,
+	.suspend = NULL,
 	.resume = lcm_resume,
 	.ata_check = lcm_ata_check,
 };

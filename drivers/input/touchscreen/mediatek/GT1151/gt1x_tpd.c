@@ -47,6 +47,7 @@ static int tpd_pm_flag;
 static int tpd_tui_flag;
 static int tpd_tui_low_power_skipped;
 DEFINE_MUTEX(tui_lock);
+int gt1x_pm_notifier(struct notifier_block *nb, unsigned long event, void *v) { return 0; }
 int tpd_halt;
 static int tpd_eint_mode = 1;
 static struct task_struct *thread;

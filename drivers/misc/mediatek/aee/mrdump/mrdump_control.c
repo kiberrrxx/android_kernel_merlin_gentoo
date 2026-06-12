@@ -44,7 +44,7 @@ static void mrdump_cblock_kallsyms_init(struct mrdump_ksyms_param *kparam)
 		kparam->flag = KSYM_64;
 		break;
 	default:
-		BUILD_BUG();
+		BUILD_WARN_ON(1);
 	}
 	kparam->start_addr = __pa_symbol(start_addr);
 	kparam->size = (unsigned long)&kallsyms_token_index - start_addr + 512;

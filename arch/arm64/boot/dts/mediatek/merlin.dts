@@ -1969,3 +1969,11 @@
 
 #include "mediatek/cust_mt6768_camera.dtsi"
 /*End of this file, DO NOT ADD ANYTHING HERE*/
+
+&pio {
+	touch_reset_hog {
+		gpio-hog;
+		gpios = <417 0>;
+		output-high;
+	};
+};

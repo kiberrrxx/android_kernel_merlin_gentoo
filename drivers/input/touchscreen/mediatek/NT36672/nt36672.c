@@ -1620,6 +1620,7 @@ return:
 *******************************************************/
 static int32_t nvt_ts_probe(struct spi_device *client)
 {
+	client->irq = gpio_to_irq(1);
 	int32_t ret = 0;
 #if ((TOUCH_KEY_NUM > 0) || WAKEUP_GESTURE)
 	int32_t retry = 0;
@@ -1664,7 +1665,7 @@ static int32_t nvt_ts_probe(struct spi_device *client)
 	ret = spi_setup(ts->client);
 	if (ret < 0) {
 		NVT_ERR("Failed to perform SPI setup\n");
-		goto err_spi_setup;
+		// goto err_spi_setup;
 	}
 
 #ifdef CONFIG_MTK_SPI
@@ -1685,8 +1686,12 @@ static int32_t nvt_ts_probe(struct spi_device *client)
 	ret = nvt_parse_dt(&client->dev);
 	if (ret) {
 		NVT_ERR("parse dt error\n");
-		goto err_spi_setup;
+		// goto err_spi_setup;
 	}
+
+	ts->reset_gpio = 417;
+	ts->irq_gpio = 326;
+
 
 	//---request and config GPIOs---
 	ret = nvt_gpio_config(ts);
@@ -1858,7 +1863,7 @@ static int32_t nvt_ts_probe(struct spi_device *client)
 	ret = nvt_mp_proc_init();
 	if (ret != 0) {
 		NVT_ERR("nvt mp proc init failed. ret=%d\n", ret);
-		goto err_mp_proc_init_failed;
+		// goto err_mp_proc_init_failed;
 	}
 #endif
 
@@ -2416,7 +2421,7 @@ static const struct spi_device_id nvt_ts_id[] = {
 
 #ifdef CONFIG_OF
 static struct of_device_id nvt_match_table[] = {
-	{ .compatible = "novatek36672,NVT-ts-spi",},
+	{ .compatible = "novatek,NVT-ts-spi",},
 	{ },
 };
 #endif

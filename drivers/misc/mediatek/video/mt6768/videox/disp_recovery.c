@@ -1207,3 +1207,5 @@ void external_display_check_recovery_init(void)
 
 }
 #endif
+
+int fts_gesture_flag = 0;

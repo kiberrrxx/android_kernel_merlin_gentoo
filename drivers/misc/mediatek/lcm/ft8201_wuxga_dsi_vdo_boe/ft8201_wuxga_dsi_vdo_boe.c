@@ -667,7 +667,7 @@ struct LCM_DRIVER ft8201_wuxga_dsi_vdo_boe_lcm_drv = {
 	.get_params         = lcm_get_params,
 	.init               = lcm_init_lcm,
 	.resume             = lcm_resume,
-	.suspend            = lcm_suspend,
+	.suspend = NULL,
 	.ata_check = lcm_ata_check,
 };
 

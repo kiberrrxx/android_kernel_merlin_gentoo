@@ -194,7 +194,7 @@ static void __mrdump_reboot_stop_all(struct mrdump_crash_record *crash_record)
 		msecs--;
 	}
 	if (atomic_read(&waiting_for_crash_ipi) > 0) {
-		if (aee_in_nested_panic())
+		if (aee_in_nested_printk())
 			aee_nested_printf(
 				"Non-crashing %d CPUs did not react to IPI\n",
 				atomic_read(&waiting_for_crash_ipi));

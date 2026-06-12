@@ -3026,7 +3026,7 @@ static void __exit mtkfb_cleanup(void)
 }
 
 
-module_init(mtkfb_init);
+// module_init(mtkfb_init);
 module_exit(mtkfb_cleanup);
 
 MODULE_DESCRIPTION("MEDIATEK framebuffer driver");

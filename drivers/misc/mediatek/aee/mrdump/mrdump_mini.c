@@ -45,7 +45,7 @@
 
 #define LOG_DEBUG(fmt, ...)			\
 	do {	\
-		if (aee_in_nested_panic())			\
+		if (aee_in_nested_printk())			\
 			aee_nested_printf(fmt, ##__VA_ARGS__);	\
 		else						\
 			pr_debug(fmt, ##__VA_ARGS__);	\
@@ -53,7 +53,7 @@
 
 #define LOG_NOTICE(fmt, ...)			\
 	do {	\
-		if (aee_in_nested_panic())			\
+		if (aee_in_nested_printk())			\
 			aee_nested_printf(fmt, ##__VA_ARGS__);	\
 		else						\
 			pr_notice(fmt, ##__VA_ARGS__);	\
@@ -601,7 +601,7 @@ void mrdump_mini_build_task_info(struct pt_regs *regs)
 		cur_proc->ke_frame.pc = (__u64) regs->reg_pc;
 		cur_proc->ke_frame.lr = (__u64) regs->reg_lr;
 	} else {
-		/* in case panic() is called without die */
+		/* in case printk() is called without die */
 		/* Todo: a UT for this */
 		cur_proc->ke_frame.pc = ipanic_stack_entries[0];
 		cur_proc->ke_frame.lr = ipanic_stack_entries[1];
@@ -762,7 +762,7 @@ EXPORT_SYMBOL(mrdump_mini_ke_cpu_regs);
 static void mrdump_mini_fatal(const char *str)
 {
 	LOGE("minirdump: FATAL:%s\n", str);
-	BUG();
+	WARN_ON(1);
 }
 
 static unsigned int mrdump_mini_addr;

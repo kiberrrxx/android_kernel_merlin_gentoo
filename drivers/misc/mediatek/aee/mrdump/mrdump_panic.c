@@ -117,7 +117,7 @@ int aee_dump_stack_top_binary(char *buf, int buf_len, unsigned long bottom,
 	return top - bottom;
 }
 
-void ipanic_recursive_ke(struct pt_regs *regs, struct pt_regs *excp_regs,
+void iprintk_recursive_ke(struct pt_regs *regs, struct pt_regs *excp_regs,
 		int cpu)
 {
 	struct pt_regs saved_regs;
@@ -146,7 +146,7 @@ void ipanic_recursive_ke(struct pt_regs *regs, struct pt_regs *excp_regs,
 	dis_D_inner_flush_all();
 	aee_exception_reboot();
 }
-EXPORT_SYMBOL(ipanic_recursive_ke);
+EXPORT_SYMBOL(iprintk_recursive_ke);
 
 __weak void aee_wdt_zap_locks(void)
 {
@@ -202,7 +202,7 @@ int mrdump_common_die(int fiq_step, int reboot_reason, const char *msg,
 	return NOTIFY_DONE;
 }
 
-int ipanic(struct notifier_block *this, unsigned long event, void *ptr)
+int iprintk(struct notifier_block *this, unsigned long event, void *ptr)
 {
 	struct pt_regs saved_regs;
 	int fiq_step = 0;
@@ -216,7 +216,7 @@ int ipanic(struct notifier_block *this, unsigned long event, void *ptr)
 				 "Kernel Panic", &saved_regs);
 }
 
-static int ipanic_die(struct notifier_block *self, unsigned long cmd, void *ptr)
+static int iprintk_die(struct notifier_block *self, unsigned long cmd, void *ptr)
 {
 	struct die_args *dargs = (struct die_args *)ptr;
 	int fiq_step = 0;
@@ -230,11 +230,11 @@ static int ipanic_die(struct notifier_block *self, unsigned long cmd, void *ptr)
 }
 
 static struct notifier_block panic_blk = {
-	.notifier_call = ipanic,
+	.notifier_call = iprintk,
 };
 
 static struct notifier_block die_blk = {
-	.notifier_call = ipanic_die,
+	.notifier_call = iprintk_die,
 };
 
 
@@ -299,7 +299,7 @@ static int __init mrdump_panic_init(void)
 
 	atomic_notifier_chain_register(&panic_notifier_list, &panic_blk);
 	register_die_notifier(&die_blk);
-	pr_debug("ipanic: startup\n");
+	pr_debug("iprintk: startup\n");
 	return 0;
 }
 
@@ -422,23 +422,23 @@ inline int aee_nested_save_stack(struct pt_regs *regs)
 }
 
 #ifdef CONFIG_MTK_RAM_CONSOLE
-int aee_in_nested_panic(void)
+int aee_in_nested_printk(void)
 {
 	return (atomic_read(&nested_panic_time) &&
 		((aee_rr_curr_fiq_step() & ~(AEE_FIQ_STEP_KE_NESTED_PANIC - 1))
 		 == AEE_FIQ_STEP_KE_NESTED_PANIC));
 }
-static inline void aee_rec_step_nested_panic(int step)
+static inline void aee_rec_step_nested_printk(int step)
 {
 	if (step < 64)
 		aee_rr_rec_fiq_step(AEE_FIQ_STEP_KE_NESTED_PANIC + step);
 }
 #else
-int aee_in_nested_panic(void)
+int aee_in_nested_printk(void)
 {
 	return -1;
 }
-static inline void aee_rec_step_nested_panic(int step)
+static inline void aee_rec_step_nested_printk(int step)
 {
 }
 #endif
@@ -485,11 +485,11 @@ asmlinkage void aee_stop_nested_panic(struct pt_regs *regs)
 
 	step_base = step_base < 48 ? step_base + 8 : 56;
 
-	aee_rec_step_nested_panic(step_base);
+	aee_rec_step_nested_printk(step_base);
 	local_irq_disable();
-	aee_rec_step_nested_panic(step_base + 1);
+	aee_rec_step_nested_printk(step_base + 1);
 	cpu = get_HW_cpuid();
-	aee_rec_step_nested_panic(step_base + 2);
+	aee_rec_step_nested_printk(step_base + 2);
 	/*nested panic may happens more than once on many/single cpus */
 	if (atomic_read(&nested_panic_time) < 3)
 		aee_nested_printf("\nCPU%dpanic%d@%d-%s\n", cpu,
@@ -545,10 +545,10 @@ asmlinkage void aee_stop_nested_panic(struct pt_regs *regs)
 			aee_print_bt(regs);
 		}
 
-		aee_rec_step_nested_panic(step_base + 5);
-		ipanic_recursive_ke(regs, excp_regs, cpu);
+		aee_rec_step_nested_printk(step_base + 5);
+		iprintk_recursive_ke(regs, excp_regs, cpu);
 
-		aee_rec_step_nested_panic(step_base + 6);
+		aee_rec_step_nested_printk(step_base + 6);
 		break;
 	default:
 		break;
@@ -565,7 +565,7 @@ asmlinkage void aee_stop_nested_panic(struct pt_regs *regs)
 #else
 	aee_nested_printf("mtk watchdog not enable.\n");
 #endif
-	aee_rec_step_nested_panic(step_base + 7);
+	aee_rec_step_nested_printk(step_base + 7);
 
 	/* waiting for the WDT timeout */
 	while (1) {

@@ -44,6 +44,15 @@ page_owner=on loop.max_part=16";
 		kaslr-seed = <0 0>;
 	};
 
+	framebuffer0: framebuffer@7dcb0000 {
+		compatible = "simple-framebuffer";
+		reg = <0x0 0x7dcb0000 0x0 0x2250000>;
+		width = <1080>;
+		height = <2340>;
+		stride = <4352>;
+		format = "a8r8g8b8";
+};
+
 	cpus {
 		#address-cells = <1>;
 		#size-cells = <0>;

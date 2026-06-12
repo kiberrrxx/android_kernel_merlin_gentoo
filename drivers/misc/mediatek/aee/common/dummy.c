@@ -125,7 +125,7 @@ __weak int aee_nested_printf(const char *fmt, ...)
 	return 0;
 }
 
-__weak int aee_in_nested_panic(void)
+__weak int aee_in_nested_printk(void)
 {
 	return 0;
 }

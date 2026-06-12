@@ -731,6 +731,6 @@ struct LCM_DRIVER jd9365_hd720_dsi_lcm_drv = {
 	.set_util_funcs = lcm_set_util_funcs,
 	.get_params = lcm_get_params,
 	.init = lcm_init_lcm,
-	.suspend = lcm_suspend,
+	.suspend = NULL,
 	.resume = lcm_resume,
 };

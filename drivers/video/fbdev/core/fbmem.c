@@ -1836,16 +1836,14 @@ int unlink_framebuffer(struct fb_info *fb_info)
 EXPORT_SYMBOL(unlink_framebuffer);
 
 int remove_conflicting_framebuffers(struct apertures_struct *a,
-				    const char *name, bool primary)
+      const char *name, bool primary)
 {
-	int ret;
+ return 0;
 
-	mutex_lock(&registration_lock);
-	ret = do_remove_conflicting_framebuffers(a, name, primary);
-	mutex_unlock(&registration_lock);
-
-	return ret;
+ bool is_firmware_fb;
+ struct fb_info *info, *conflicting;
 }
+
 EXPORT_SYMBOL(remove_conflicting_framebuffers);
 
 /**

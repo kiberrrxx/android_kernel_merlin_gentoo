@@ -753,13 +753,13 @@ struct LCM_DRIVER otm1901a_fhd_dsi_vdo_tpv_lcm_drv = {
 	.set_util_funcs = lcm_set_util_funcs,
 	.get_params = lcm_get_params,
 	.init = lcm_init_lcm,
-	.suspend = lcm_suspend,
+	.suspend = NULL,
 	.resume = lcm_resume,
 /*	.compare_id = lcm_compare_id, */
 	.init_power = lcm_init_power,
 	.resume_power = lcm_resume_power,
 	.suspend_power = lcm_suspend_power,
-/*	.esd_check = lcm_esd_check, */
+/*	.esd_check = NULL,
 	.ata_check = lcm_ata_check,
 	.update = lcm_update,
 };

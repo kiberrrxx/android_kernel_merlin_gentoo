@@ -1409,7 +1409,7 @@ static void __exit drcc_exit(void)
 	drcc_debug("drcc de-initialization\n");
 }
 
-late_initcall(drcc_init);
+// // late_initcall(drcc_init);
 
 MODULE_DESCRIPTION("MediaTek DRCC Driver v0.1");
 MODULE_LICENSE("GPL");

@@ -1743,7 +1743,7 @@ static int hang_detect_thread(void *arg)
 					if (monit_hang_flag == 1) {
 					/* eng load can detect whether KE*/
 #endif
-						/* BUG(); */
+						/* WARN_ON(1); */
 						show_kaslr(true);
 						mrdump_mini_add_hang_raw(
 						(unsigned long)Hang_Info,

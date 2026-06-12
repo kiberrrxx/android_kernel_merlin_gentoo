@@ -369,7 +369,7 @@ static ssize_t proc_generate_oops_read(struct file *file,
 	if (copy_to_user(buf, buffer, len))
 		pr_notice("%s fail to output info.\n", __func__);
 
-	BUG();
+	WARN_ON(1);
 	return len;
 }
 
@@ -425,7 +425,7 @@ static ssize_t proc_generate_oops_write(struct file *file,
 		register_kprobe_kpd_irq_handler();
 		break;
 	case 3:
-		panic("aee test");
+		printk("aee test");
 		break;
 	default:
 		break;
@@ -433,16 +433,16 @@ static ssize_t proc_generate_oops_write(struct file *file,
 	return size;
 }
 
-static int nested_panic(struct notifier_block *this, unsigned long event,
+static int nested_printk(struct notifier_block *this, unsigned long event,
 								void *ptr)
 {
 	pr_notice("\n => force nested panic\n");
-	BUG();
+	WARN_ON(1);
 	return 0;
 }
 
 static struct notifier_block panic_blk = {
-	.notifier_call = nested_panic,
+	.notifier_call = nested_printk,
 	.priority = INT_MAX - 100,
 };
 
@@ -453,7 +453,7 @@ static ssize_t proc_generate_nested_ke_read(struct file *file, char __user *buf,
 
 	atomic_notifier_chain_register(&panic_notifier_list, &panic_blk);
 	pr_notice("\n => panic_notifier_list registered\n");
-	BUG();
+	WARN_ON(1);
 	/* len = sprintf(page, "Nested panic generated\n"); */
 
 	return len;
@@ -483,7 +483,7 @@ static ssize_t proc_generate_nested_ke_write(struct file *file,
 		register_die_notifier(&panic_blk);
 		break;
 	}
-	BUG();
+	WARN_ON(1);
 	return 0;
 }
 

@@ -1308,11 +1308,11 @@ unsigned int mtkfb_fm_auto_test(void)
 	var.bits_per_pixel = 32;
 	var.transp.offset = 24;
 	var.transp.length = 8;
-	var.red.offset = 16;
+	var.red.offset = 0;
 	var.red.length = 8;
 	var.green.offset = 8;
 	var.green.length = 8;
-	var.blue.offset = 0;
+	var.blue.offset = 16;
 	var.blue.length = 8;
 
 	r = mtkfb_check_var(&var, mtkfb_fbi);
@@ -2323,11 +2323,11 @@ static int mtkfb_fbinfo_init(struct fb_info *info)
 	var.transp.offset = 24;
 	var.red.length = 8;
 #if 0
-	var.red.offset = 16;
+	var.red.offset = 0;
 	var.red.length = 8;
 	var.green.offset = 8;
 	var.green.length = 8;
-	var.blue.offset = 0;
+	var.blue.offset = 16;
 	var.blue.length = 8;
 #else
 	var.red.offset = 0;
